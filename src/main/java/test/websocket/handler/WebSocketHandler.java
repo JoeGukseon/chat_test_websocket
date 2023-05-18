@@ -32,7 +32,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override //웹소켓 연결시 호출 메서드
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info(session.getId() + "님이 접속했습니다.");
-        log.info("열결 IP : " + session.getRemoteAddress().getHostName());
+        log.info("연결 IP : " + session.getRemoteAddress().getHostName());
         super.afterConnectionEstablished(session);
     }
 
