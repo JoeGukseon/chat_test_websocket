@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import test.websocket.dto.ChatMessageDTO;
 
 @Controller
@@ -23,6 +24,5 @@ public class StompChatController {
     public void message(ChatMessageDTO message){
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
-
 
 }

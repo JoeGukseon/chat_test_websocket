@@ -18,5 +18,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");//보내는경로의 prefix? ex)/pub/chat/enter..
         registry.enableSimpleBroker("/sub");//구독 주소 prefix
+//        registry.setApplicationDestinationPrefixes("/app");//보내는경로의 prefix? ex)/pub/chat/enter..
+//        registry.enableSimpleBroker("/topic");//구독 주소 prefix
     }
 }

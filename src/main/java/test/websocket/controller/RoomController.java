@@ -2,47 +2,50 @@ package test.websocket.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import test.websocket.dto.ChatRoomDTO;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import test.websocket.repository.ChatRoomRepository;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/chat")
 @Log4j2
 public class RoomController {
-
     private final ChatRoomRepository repository;
 
     //채팅방 목록 조회
     @GetMapping(value = "/rooms")
-    public ResponseEntity rooms(){
+    public ModelAndView rooms(){
 
         log.info("# All Chat Rooms");
+        ModelAndView mv = new ModelAndView("chat/rooms");
 
-        List<ChatRoomDTO> roomDTOList = repository.findAllRooms();
+        mv.addObject("list", repository.findAllRooms());
 
-        return new ResponseEntity<>(
-                roomDTOList,
-                HttpStatus.OK);
+        return mv;
     }
 
+    //채팅방 개설
     @PostMapping(value = "/room")
-    public ChatRoomDTO create(@RequestParam String name){
+    public String create(@RequestParam String name, RedirectAttributes rttr){
+
         log.info("# Create Chat Room , name: " + name);
-        ChatRoomDTO chatRoomDTO = repository.createChatRoomDTO(name);
-        return chatRoomDTO;
+        rttr.addFlashAttribute("roomName", repository.createChatRoomDTO(name));
+        return "redirect:/chat/rooms";
     }
 
+    //채팅방 조회
     @GetMapping("/room")
-    public ChatRoomDTO getRoom(String roomId){
+    public void getRoom(String roomId, Model model){
+
         log.info("# get Chat Room, roomID : " + roomId);
 
-        return repository.findRoomById(roomId);
+        model.addAttribute("room", repository.findRoomById(roomId));
     }
 }
